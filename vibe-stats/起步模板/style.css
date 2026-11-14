@@ -1,0 +1,241 @@
+/* ==========================================================================
+   这个文件归【C · 样式】管。其他人不要改这个文件。
+
+   想把页面变好看，改这里就够了，不用碰别的文件。
+   全站的颜色都写在最上面那一段（:root）里，改一次全站生效。
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   一、全局配色和字体
+   改颜色只改这里。不要在下面各处直接写 #4f6ef7 这种色号。
+   -------------------------------------------------------------------------- */
+:root {
+  --ink:     #0f172a;   /* 主要文字颜色 */
+  --muted:   #64748b;   /* 次要文字颜色（说明文字） */
+  --line:    #e2e8f0;   /* 边框颜色 */
+  --bg:      #f6f7fb;   /* 页面背景色 */
+  --primary: #4f6ef7;   /* 主题色（图表柱子用这个） */
+  --card:    #fff;      /* 卡片背景色 */
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 24px 16px 64px;
+  background: var(--bg);
+  color: var(--ink);
+  font: 14px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei",
+        "PingFang SC", "Hiragino Sans GB", sans-serif;
+}
+
+/* 整页居中，最宽 1040px */
+.wrap { max-width: 1040px; margin: 0 auto; }
+
+
+/* --------------------------------------------------------------------------
+   二、顶部标题区
+   -------------------------------------------------------------------------- */
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;          /* 窄屏幕自动换行 */
+  margin-bottom: 20px;
+}
+
+h1 { margin: 0 0 4px; font-size: 21px; letter-spacing: -0.2px; }
+
+.sub { margin: 0; font-size: 12px; color: var(--muted); }
+
+
+/* --------------------------------------------------------------------------
+   三、筛选条
+   -------------------------------------------------------------------------- */
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 12px 14px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  margin-bottom: 14px;
+}
+
+.filters label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+select {
+  font: inherit;
+  font-size: 13px;
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ink);
+}
+
+.note { font-size: 12px; color: #b45309; }   /* 那句"有 1 条记录被排除"的提示 */
+
+button {
+  font: inherit;
+  font-size: 12px;
+  padding: 5px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+button:hover { border-color: #cbd5e1; color: var(--ink); }
+
+
+/* --------------------------------------------------------------------------
+   四、三种状态（加载中 / 出错 / 没数据）
+   -------------------------------------------------------------------------- */
+.state {
+  padding: 56px 16px;
+  text-align: center;
+  color: var(--muted);
+  background: var(--card);
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+}
+
+.state.err { color: #b91c1c; border-color: #fecaca; background: #fff5f5; }
+
+.state .retry-wrap { margin-top: 12px; }
+
+
+/* --------------------------------------------------------------------------
+   五、指标卡
+   -------------------------------------------------------------------------- */
+.cards {
+  display: grid;
+  /* 每张卡最窄 170px，窗口宽就自动多排几列，窄就自动换行 —— 手机也能看 */
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+  min-width: 0;           /* 关键：不加这行，超长数字会把卡片撑破 */
+}
+
+.label {
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+/* 标题后面那个小问号，鼠标移上去显示口径 */
+.hint {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid #cbd5e1;
+  color: #94a3b8;
+  font-size: 10px;
+  cursor: help;
+  flex: none;
+}
+
+/* 数字本身：等宽数字让多个数字上下对齐；overflow-wrap 让超长数字换行而不是溢出 */
+.value {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+
+/* --------------------------------------------------------------------------
+   六、面板（图表区、表格区）
+   -------------------------------------------------------------------------- */
+.panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px 16px;
+  margin-bottom: 14px;
+}
+
+.panel h2 { margin: 0 0 10px; font-size: 13px; font-weight: 600; color: var(--muted); }
+
+.chart { width: 100%; height: auto; display: block; }
+
+.muted { color: var(--muted); font-size: 13px; }
+
+
+/* --------------------------------------------------------------------------
+   七、明细表
+   -------------------------------------------------------------------------- */
+.table-wrap { overflow-x: auto; }     /* 表格太宽时自己横向滚动，不撑破页面 */
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+
+th, td {
+  padding: 7px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+th { font-weight: 600; color: var(--muted); font-size: 12px; }
+
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+.row-bad td { color: #94a3b8; }        /* 被排除的脏记录，整行变灰 */
+
+.tag {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 11px;
+}
+
+
+/* --------------------------------------------------------------------------
+   八、页脚口径说明
+   -------------------------------------------------------------------------- */
+footer {
+  margin-top: 18px;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.9;
+}
+
+footer b { color: var(--ink); font-weight: 600; }
+
+
+/* --------------------------------------------------------------------------
+   九、手机适配
+   窗口窄到 420px 以下时，把字号调小，保证不横向滚动。
+   -------------------------------------------------------------------------- */
+@media (max-width: 420px) {
+  .value { font-size: 20px; }
+  h1 { font-size: 18px; }
+}

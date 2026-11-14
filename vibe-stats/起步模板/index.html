@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  这个文件归【B · 页面结构】管。其他人不要改这个文件。
+
+  它只负责"页面上有哪些东西、顺序是什么"，不写样式、不写逻辑：
+    · 长什么样   → style.css（C 管）
+    · 数据和行为 → data.js（A 管）、app.js（D 管）
+
+  别人想加一个区块怎么办？
+    Day 1 就把预留的空容器写好（下面每个 <section> 都是），之后基本不用动这个文件。
+    真的要改，找 B。
+  ============================================================================
+-->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>运营数据概览</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ---------- 顶部：标题 + 数据来源 + 更新时间 ---------- -->
+  <header class="head">
+    <div>
+      <h1>运营数据概览</h1>
+      <p class="sub">
+        数据来源：<span id="source">—</span> ·
+        更新于 <span id="fetched-at">—</span>
+      </p>
+    </div>
+    <button id="simulate-error" type="button">模拟请求失败</button>
+  </header>
+
+  <!-- ---------- 筛选条 ---------- -->
+  <section class="filters">
+    <label>时间范围
+      <select id="range">
+        <option value="all">全部</option>
+        <option value="7">最近 7 天</option>
+        <option value="3">最近 3 天</option>
+        <option value="1">仅最新一天</option>
+      </select>
+    </label>
+    <label>渠道
+      <select id="channel">
+        <option value="all">全部</option>
+        <!-- 其他选项由 app.js 根据数据自动加进来 -->
+      </select>
+    </label>
+    <span class="note" id="note"></span>
+  </section>
+
+  <!-- ---------- 三种状态：一次只显示一个 ---------- -->
+  <div class="state" id="state-loading">加载中…</div>
+
+  <div class="state err" id="state-error" hidden>
+    数据加载失败，请检查网络后重试
+    <div class="retry-wrap"><button id="retry" type="button">重试</button></div>
+  </div>
+
+  <div class="state" id="state-empty" hidden>
+    当前筛选条件下没有数据，试试调整时间范围或渠道
+  </div>
+
+  <!-- ---------- 正常内容：以上三种状态都不占位时才显示 ---------- -->
+  <main id="content" hidden>
+
+    <!-- 指标卡：由 app.js 生成 -->
+    <div class="cards" id="cards"></div>
+
+    <!-- 趋势图：由 app.js 生成 -->
+    <section class="panel">
+      <h2>每日访问量</h2>
+      <div id="chart"></div>
+    </section>
+
+    <!-- 明细表：由 app.js 生成 -->
+    <section class="panel">
+      <h2>明细记录</h2>
+      <div class="table-wrap"><table id="table"></table></div>
+    </section>
+
+    <!-- 预留：以后要加新区块，在这里加一个 <section class="panel"> 就行 -->
+
+  </main>
+
+  <!-- ---------- 页脚：指标口径 ----------
+       做统计页面，这一块不是可选项。别人看到数字第一件事就是问"你怎么算的"。 -->
+  <footer>
+    <b>指标口径</b><br>
+    总访问量 = 筛选范围内所有完整记录的访问数之和。<br>
+    转化率 = 订单数 ÷ 访问量。客单价 = 成交金额 ÷ 订单数。<br>
+    成交金额单位：元（已含税），不含金额缺失的记录。<br>
+    日期按北京时间自然日；数据延迟 1 天。<br>
+    不完整记录（缺失关键字段）不参与任何指标计算，在明细表中标记为"已排除"。
+  </footer>
+
+</div>
+
+<!-- 注意顺序：先 data.js（提供数据和计算），再 app.js（使用它们） -->
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
